@@ -35,18 +35,8 @@
 > 6. Marco Processor
 >    
 >    translate macros instructions into definition
-
-```mermaid
-graph TD;
-高階語言 --> 編譯器
-編譯器 --> 組合語言
-組合語言 --> 組譯器
-組譯器 --> 目的檔
-目的檔 --> 連結器
-連結器 --> 執行檔
-執行檔 --> 載入器
-載入器 --> 記憶體
-```
+> 
+> ![](src/HLA_to_RAM.png)
 
 ### Application Software
 
