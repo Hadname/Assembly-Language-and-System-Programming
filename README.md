@@ -4,25 +4,25 @@
 
 **Midterm**
 
-+ [CH1 An Introduction to Systems Programming](/CH1 An Introduction to Systems Programming.md)
++ [CH1 An Introduction to Systems Programming](./CH1%20An%20Introduction%20to%20Systems%20Programming.md)
 
-+ [CH2 X86 Processor Architecture](./CH2 X86 Processor Architecture.md)
++ [CH2 X86 Processor Architecture](./CH2%20X86%20Processor%20Architecture.md)
 
-+ [CH3 Assembly Language Fundamentals](./CH3 Assembly Language Fundamentals.md)
++ [CH3 Assembly Language Fundamentals](./CH3%20Assembly%20Language%20Fundamentals.md)
 
-+ [CH4 Data Transfers, Addressing, and Arithmetic](./CH4 Data Transfers, Addressing, and Arithmetic.md)
++ [CH4 Data Transfers, Addressing, and Arithmetic](./CH4%20Data%20Transfers,%20Addressing,%20and%20Arithmetic.md)
 
-+ [CH7 Integer Arithmetic](./CH7 Integer Arithmetic.md)
++ [CH7 Integer Arithmetic](./CH7%20Integer%20Arithmetic.md)
 
 **Final**
 
-+ [CH5 Procedures](./CH5 Procedures.md)
++ [CH5 Procedures](./CH5%20Procedures.md)
 
-+ [CH6 Conditional Processing](./CH6 Conditional Processing.md)
++ [CH6 Conditional Processing](./CH6%20Conditional%20Processing.md)
 
-+ [System Software ─ Background](./System Software ─ Background.md)
++ [System Software ─ Background](./System%20Software%20─%20Background.md)
 
-+ [System Software ─ Assembler](./System Software ─ Assembler.md)
++ [System Software ─ Assembler](./System%20Software%20─%20Assembler.md)
 
 ## Homework
 
