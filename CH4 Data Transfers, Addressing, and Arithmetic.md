@@ -4,7 +4,7 @@
 
 **Operand Types**
 
-> + Immediate - a constant interger
+> + Immediate - a constant integer
 >   
 >   + value is encoded within the instruction
 > 
@@ -83,4 +83,205 @@ The **MOVSX instruction fills the upper half of the destination** **with a copy 
 ```nasm
 MOV   BL, 10001111b
 MOVZX AX, BL       ; AX: 11111111 10001111
+```
+
+ ---
+
+### 以下為期末考範圍
+
+> Date: 2020/05/11
+
+---
+
+## OFFSET
+
+OFFSET returns the distance in bytes, of a label from the beginning of its enclosing segment
+
++ Protected mode: 32bits
+
++ Real mode: 16bits
+
+> The Protected-mode programs we write use only a single segment (flat memory model)
+
+**Example**
+
+Let's assume that the data segment begins at 00404000h
+
+```nasm
+.data
+    bVal   BYTE  ?
+    wVal   WORD  ?
+    dVal   DWORD ?
+    dVal2  DWORD ?
+
+.code
+    MOV    ESI, OFFSET bVal  ;ESI = 00404000
+    MOV    ESI, OFFSET wVal  ;ESI = 00404001
+    MOV    ESI, OFFSET dVal  ;ESI = 00404003
+    MOV    ESI, OFFSET dVal2 ;ESI = 00404007 
+```
+
+## PTR Operator
+
+Overrides the default type of label. Provides the flexibility to access part of a variable.
+
+有點類似 C 語言中用 \* 來取值，但是組語中的指標類似 C 語言的 void\* 是沒有型態的，所以在取值是要在轉型
+
+```nasm
+.data
+    myDouble DWORD 12345678h
+
+.code
+    MOV  AX, myDouble             ; error
+    MOV  AX, WORD PTR myDouble    ; AX = 5678
+    MOV  WORD PTR myDouble, 4321h ; myDouble = 12344231    
+```
+
+| offset | byte |
+|:------:|:----:|
+| 0000   | 78   |
+| 0001   | 56   |
+| 0002   | 34   |
+| 0003   | 12   |
+
+## TYPE Operator
+
+The TYPE operator return the size, in bytes, of a single element of a data declaration.
+
+```nasm
+.data
+    var1 BYTE  ?
+    var2 WORD  ?
+    var3 DWORD ?
+    var4 QWORD ?
+
+.code
+    MOV  EAX, TYPE var1    ; 1
+    MOV  EAX, TYPE var2    ; 2
+    MOV  EAX, TYPE var3    ; 4
+    MOV  EAX, TYPE var4    ; 8
+```
+
+## LENGTHOF Operator
+
+The LENGTHOF operator counts the number of elements in a single data declaration
+
+```nasm
+.data
+    byte1  BTYE  10, 20, 30           ;  3
+    array1 WORD  30 DUP(?), 0 , 0     ; 32
+    array2 WORD  5 DUP(3 DUP(?))      ; 15
+    array3 DWORD 1,2,3,4              ;  4
+    digitStr BYTE "12345678", 0       ;  9
+
+.code
+    mov ecx, LENGTHOF array1          ; 32
+```
+
+## SIZEOF Operator
+
+The SIZEOF operator return a value that is equivalent to <u>multiplying LENGTHOF by TYPE</u>
+
+```nasm
+.data
+    array1 WORD 30 DUP(?), 0, 0
+.code
+    MOV    ECX, SIZEOF array1
+```
+
+## INDIRECT Operator
+
+An indirect operand hold the address of a variable, usually an array or string. It can be dereferenced (just like a pointer)
+
+```nasm
+.data
+    val1 BYTE 10h, 20h, 30h
+
+.code
+    MOV    ESI, OFFSET vall
+    MOV    AL,  [ESI]        ; AL = 10h
+
+    INC    ESI
+    MOV    AL,  [ESI]        ; AL = 20h
+
+    INC    ESI
+    MOV    AL,  [ESI]        ; AL = 30h
+```
+
+## Exaple Array Sum
+
+## Index scaling
+
+You can scale an indirected or indexed operand to the offset of an array element. This is done by multiplying the index by the array's TYPE.
+
+```nasm
+.data
+    arrayB BYTE  0,1,2,3,4,5
+    arrayW WORD  0,1,2,3,4,5
+    arrayD DWORD 0,1,2,3,4,5
+.code
+    MOV    AL, arrayB[1*TYPE arrayB] ; 01
+    MOV    AL, arrayW[2*TYPE arrayW] ; 0002
+    MOV    AL, arrayD[2*TYPE arrayD] ; 00000003
+```
+
+## Pointers
+
+You can declare a pointer variable that contains the offset of another variable.
+
+```nasm
+.data
+    arrayW WORD 1000h, 2000h, 3000h
+    ptrW   DWORD arrayW
+.code
+    MOV    ESI, ptrW
+    MOV    AX,  [ESI]    ; AX = 1000h
+```
+
+**Alternate format**
+
+```nasm
+ptrW   DWORD  OFFSET arrayW
+```
+
+## JMP Instruction
+
+```nasm
+top:
+    ;
+    ;
+    ;
+    ;
+    JMP top
+```
+
+類似 C 語言中的 goto
+
+## LOOP Instruction
+
+```nasm
+    MOV   AX,  0
+    MOV   ECX, 5
+L1: ADD   EAX, CX
+    LOOP  L1
+```
+
+每經過一次 loop ，就把 ECX 減一 並檢查是否為 0，若為零則跳出迴圈
+
+```nasm
+add    EAX, CX    ; AX = 5
+loop   L1         ; CX = 4
+
+add    EAX, CX    ; AX = 9
+loop   L1         ; CX = 3
+
+add    EAX, CX    ; AX = 12
+loop   L1         ; CX = 2
+
+add    EAX, CX    ; AX = 14
+loop   L1         ; CX = 1
+
+
+add    EAX, CX    ; AX = 15
+loop   L1         ; CX = 0   跳出
 ```
